@@ -42,7 +42,7 @@ class _HomeAppState extends State<HomeApp> {
     Center(
     child: Stack(
     children: [
-      figureImage(true, "")
+      figureImage(true, "assets/1.png")
       ],
     ),
     )
