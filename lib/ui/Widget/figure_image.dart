@@ -4,8 +4,8 @@ Widget figureImage(bool visible, String path) {
   return Visibility(
       visible: visible,
       child: Container(
-        width: 250,
-        height: 250,
+        width: 450,
+        height: 450,
         child: Image.asset(path),
       )
   );
