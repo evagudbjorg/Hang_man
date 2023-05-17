@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hang_man/prufa.dart';
 import 'package:hang_man/ui/Widget/figure_image.dart';
 import 'package:hang_man/ui/Widget/letter.dart';
 import 'package:hang_man/ui/colors.dart';
@@ -30,7 +32,31 @@ class HomeApp extends StatefulWidget {
 }
 //hidden word
 class _HomeAppState extends State<HomeApp> {
-  String word = "Flutter";
+
+  List<String> nouns = [
+    'Hundur',
+    'Köttur',
+    'Hestur',
+    'Flóðhestur',
+    'Ljón',
+    'Gíraffi',
+    'Fíll',
+    'Lamadýr',
+    'Mús',
+    'Svín'
+  ];
+
+  Random random = Random();
+  late int randomIndex;
+  late String word;
+
+  @override
+  void initState() {
+    super.initState();
+    randomIndex = random.nextInt(nouns.length);
+    word = nouns[randomIndex];
+  }
+  //String word = "Hundur";
   //alphabet that appears
   List<String> alphabets = [
     "A",
@@ -66,6 +92,8 @@ class _HomeAppState extends State<HomeApp> {
     "Æ",
     "Ö",
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +149,7 @@ class _HomeAppState extends State<HomeApp> {
             ),
           ),
 
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
 
           //keyboard
           SizedBox(
