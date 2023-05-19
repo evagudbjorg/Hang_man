@@ -5,7 +5,7 @@ import 'package:hang_man/ui/colors.dart';
 Widget letter(String character, bool hidden) {
   return Container(
     height: 70,
-    width: 50,
+    width: 60,
     padding: EdgeInsets.all(12.0),
     decoration: BoxDecoration(
       color: AppColor.primaryColorDark,
