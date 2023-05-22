@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hang_man/ui/colors.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 enum Difficulty {
   fjorir,

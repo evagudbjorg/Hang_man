@@ -1,14 +1,11 @@
 import 'dart:math';
 
-import '../home_screen.dart';
-import '../utils/game.dart';
-
 List<String> fjorirWords = [
   'Ljón',
   'Fíll',
   'Svín',
   "Kind",
-  // Add more words for Difficulty.fjorir
+
 ];
 
 List<String> fimmWords = [
@@ -16,7 +13,7 @@ List<String> fimmWords = [
   'Fálki',
   'Fluga',
   'Ormur',
-  // Add more words for Difficulty.fimm
+
 ];
 
 List<String> sexWords = [
@@ -24,7 +21,6 @@ List<String> sexWords = [
   'Köttur',
   "Hundur",
   'Krabbi',
-  // Add more words for Difficulty.sex
 ];
 
 Random random = Random();
