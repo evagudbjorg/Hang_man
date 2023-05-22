@@ -5,3 +5,4 @@ class Game {
   static List<String> selectedChar= [];
 
 }
+

@@ -1,109 +1,73 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:hang_man/prufa.dart';
 import 'package:hang_man/ui/Widget/figure_image.dart';
 import 'package:hang_man/ui/Widget/letter.dart';
 import 'package:hang_man/ui/colors.dart';
 import "package:hang_man/utils/game.dart";
-
-
+import 'package:hang_man/ui/Widget/alphabet.dart';
+import 'package:hang_man/data/Difficulty.dart';
+import 'package:hang_man/utils/restartGame.dart';
+import 'home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: HomeApp(),
+      home: HomeScreen(),
     );
   }
 }
-
 class HomeApp extends StatefulWidget {
-  const HomeApp({Key? key}) : super(key: key);
+  final Difficulty difficulty;
+
+  const HomeApp({Key? key, required this.difficulty}) : super(key: key);
 
   @override
   State<HomeApp> createState() => _HomeAppState();
 }
-//hidden word
+
 class _HomeAppState extends State<HomeApp> {
-
-  List<String> nouns = [
-    'Hundur',
-    'Köttur',
-    'Hestur',
-    'Flóðhestur',
-    'Ljón',
-    'Gíraffi',
-    'Fíll',
-    'Lamadýr',
-    'Mús',
-    'Svín'
-  ];
-
-  Random random = Random();
-  late int randomIndex;
-  late String word;
 
   void restartGame() {
     setState(() {
       Game.selectedChar.clear();
       Game.tries = 0;
-      randomIndex = random.nextInt(nouns.length);
-      word = nouns[randomIndex];
+      if (widget.difficulty == Difficulty.fjorir) {
+        word = fjorirWords[randomIndex];
+      } else if (widget.difficulty == Difficulty.fimm) {
+        word = fimmWords[randomIndex];
+      } else if (widget.difficulty == Difficulty.sex) {
+        word = sexWords[randomIndex];
+      } else {
+        // Default word list if difficulty is not set
+        word = '';
+      }
     });
   }
 
-  @override
+
+@override
   void initState() {
     super.initState();
-    randomIndex = random.nextInt(nouns.length);
-    word = nouns[randomIndex];
+    if (widget.difficulty == Difficulty.fjorir) {
+      randomIndex = random.nextInt(fjorirWords.length);
+      word = fjorirWords[randomIndex];
+    } else if (widget.difficulty == Difficulty.fimm) {
+      randomIndex = random.nextInt(fimmWords.length);
+      word = fimmWords[randomIndex];
+    } else if (widget.difficulty == Difficulty.sex) {
+      randomIndex = random.nextInt(sexWords.length);
+      word = sexWords[randomIndex];
+    } else {
+      // Default word list if difficulty is not set
+      word = '';
+    }
   }
 
-
-  //String word = "Hundur";
-  //alphabet that appears
-  List<String> alphabets = [
-    "A",
-    "Á",
-    "B",
-    "D",
-    "Ð",
-    "E",
-    "É",
-    "F",
-    "G",
-    "H",
-    "I",
-    "Í",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "Ó",
-    "P",
-    "R",
-    "S",
-    "T",
-    "U",
-    "Ú",
-    "V",
-    "X",
-    "Y",
-    "Ý",
-    "Þ",
-    "Æ",
-    "Ö",
-  ];
   bool isWordGuessed() {
     for (var letter in word.toUpperCase().split('')) {
       if (!Game.selectedChar.contains(letter)) {
@@ -112,11 +76,9 @@ class _HomeAppState extends State<HomeApp> {
     }
     return true;
   }
-
   bool isGameOver() {
-    return Game.tries >= 10;
+    return Game.tries >= 11;
   }
-
 
     @override
     Widget build(BuildContext context) {
@@ -130,20 +92,39 @@ class _HomeAppState extends State<HomeApp> {
             ),
             elevation: 0,
             centerTitle: true,
-            backgroundColor: AppColor.primaryColor,
+            backgroundColor: Colors.green,
           ),
           body: Center(
             child: Container(
-              color: AppColor.primaryColor.withOpacity(0.5),
-              child: const Center(
-                child: Text(
-                  'Þú vannst!',
-                  style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+              color: Colors.green,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                const Text(
+                'Þú vannst!',
+                style: TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: restartGame,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green), // Change the background color
+                  textStyle: MaterialStateProperty.all<TextStyle>(
+                      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)), // Change the text style
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10)), // Change the padding
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Change the border radius
+                    ),
                   ),
                 ),
+                child: const Text('Spila aftur'),
+              ),
+              ],
               ),
             ),
           ),
@@ -152,7 +133,7 @@ class _HomeAppState extends State<HomeApp> {
 
       if (isGameOver()) {
         return Scaffold(
-          backgroundColor: AppColor.primaryColor,
+          backgroundColor: Colors.red,
           appBar: AppBar(
             title: const Text(
               "HENGIMAÐUR",
@@ -160,20 +141,40 @@ class _HomeAppState extends State<HomeApp> {
             ),
             elevation: 0,
             centerTitle: true,
-            backgroundColor: AppColor.primaryColor,
+            backgroundColor: Colors.red,
           ),
           body: Center(
             child: Container(
-              color: AppColor.primaryColor,
-              child: const Center(
-                child: Text(
-                  'þú tapaðir!',
-                  style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
+              color: Colors.red,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'þú tapaðir :(',
+                    style: TextStyle(
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
+                  ElevatedButton(
+                    onPressed: restartGame,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red), // Change the background color
+                      textStyle: MaterialStateProperty.all<TextStyle>(
+                          const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)), // Change the text style
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10)), // Change the padding
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // Change the border radius
+                        ),
+                          ),
+                        ),
+                    child: const Text('Spila aftur'),
+                  ),
+                ],
+
               ),
             ),
           ),
@@ -261,7 +262,7 @@ class _HomeAppState extends State<HomeApp> {
                     onPressed: Game.selectedChar.contains(e)
                         ? null // we first check that we didn't selected the button before
                         : () {
-                      setState(() {
+                     setState(() {
                         // add the character e to the selectedChar list of Game object
                         Game.selectedChar.add(e);
                         // print the contents of selectedChar to the console
